@@ -1,8 +1,13 @@
-const { Sequelize } = require('sequelize');
+const mysql = require('mysql2/promise');
 
-const sequelize = new Sequelize('ecommerce_db', 'user', 'user_password', {
-  host: 'mysql',
-  dialect: 'mysql'
+const pool = mysql.createPool({
+  host: 'mysql',         // Nome do serviço no docker-compose.yml
+  user: 'user',
+  password: 'user_password',
+  database: 'ecommerce_db',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
-module.exports = sequelize;
+module.exports = pool;

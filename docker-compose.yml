@@ -11,20 +11,30 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
-      - ./database:/docker-entrypoint-initdb.d
-    entrypoint: /docker-entrypoint-initdb.d/init-database.sh
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   api:
     build: ./src
     container_name: node_api_container
     environment:
       - NODE_ENV=development
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=user_password
+      - MYSQL_DATABASE=ecommerce_db
     volumes:
       - ./src:/usr/src/app
     ports:
       - "3000:3000"
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
 
 volumes:
   db_data:

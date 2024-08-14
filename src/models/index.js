@@ -1,18 +1,11 @@
-const Sequelize = require('sequelize');
 const sequelize = require('../config/database');
 
-const Cliente = require('./cliente')(sequelize, Sequelize.DataTypes);
-const Estoque = require('./estoque')(sequelize, Sequelize.DataTypes);
-const Pedido = require('./pedido')(sequelize, Sequelize.DataTypes);
-const ItemPedido = require('./itemPedido')(sequelize, Sequelize.DataTypes);
-const Pagamento = require('./pagamento')(sequelize, Sequelize.DataTypes);
+const Cliente = require('./cliente');
+const Estoque = require('./estoque');
+const Pedido = require('./pedido');
+const ItemPedido = require('./itemPedido');
+const Pagamento = require('./pagamento');
 
-Pedido.belongsTo(Cliente);
-ItemPedido.belongsTo(Pedido);
-ItemPedido.belongsTo(Estoque);
-Pagamento.belongsTo(Pedido);
-
-sequelize.sync();
 
 module.exports = {
   Cliente,

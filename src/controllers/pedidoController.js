@@ -2,12 +2,9 @@ const pool = require('../config/database');
 
 exports.realizarPedido = async (req, res) => {
   const { cliente_id, itens, valor_pagamento } = req.body;
-
+  const connection = await pool.getConnection();
   try {
-    // Iniciar uma transação
-    const connection = await pool.getConnection();
-    await connection.beginTransaction();
-
+    
     // Inserir o pedido
     const [pedidoResult] = await connection.query(
       'INSERT INTO Pedido (cliente_id, data_pedido, status_pedido) VALUES (?, NOW(), ?)',
@@ -54,8 +51,6 @@ exports.realizarPedido = async (req, res) => {
       ['confirmado', pedido_id]
     );
 
-    // Confirmar a transação
-    await connection.commit();
     connection.release();
 
     res.status(201).json({ message: 'Pedido realizado com sucesso!', pedido_id: pedido_id });

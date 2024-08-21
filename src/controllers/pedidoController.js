@@ -3,10 +3,12 @@ const pool = require('../config/database');
 exports.realizarPedido = async (req, res) => {
   const { cliente_id, itens, valor_pagamento } = req.body;
 
+  // Iniciar uma transação
+  const connection = await pool.getConnection();
+  
+  
   try {
-    // Iniciar uma transação
-    const connection = await pool.getConnection();
-    await connection.beginTransaction();
+
 
     // Inserir o pedido
     const [pedidoResult] = await connection.query(
@@ -54,19 +56,19 @@ exports.realizarPedido = async (req, res) => {
       ['confirmado', pedido_id]
     );
 
-    // Confirmar a transação
-    await connection.commit();
     connection.release();
 
     res.status(201).json({ message: 'Pedido realizado com sucesso!', pedido_id: pedido_id });
   } catch (error) {
     console.error("Erro ao realizar pedido:", error);
+
     res.status(500).json({ error: 'Erro ao realizar pedido' });
   }
 };
 
 exports.verPedidos = async (req, res) => {
   try {
+    console.error("Buscando pedidos...");
     const [rows] = await pool.query('SELECT * FROM vw_pedidos_realizados');
     res.status(200).json(rows);
   } catch (error) {

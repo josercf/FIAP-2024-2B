@@ -1,3 +1,4 @@
+const swaggerDocs = require('./swagger.js');
 const express = require('express');
 const bodyParser = require('body-parser');
 const pedidoRoutes = require('./routes/pedidoRoutes');
@@ -7,7 +8,14 @@ app.use(bodyParser.json());
 
 app.use('/api', pedidoRoutes);
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
+const port = process.env.PORT || 3000;
+
+try {
+  app.listen(port, () => {
+      console.log(`Servidor rodando na porta ${port}`);
+  })
+  swaggerDocs(app, port)
+} catch (error) {
+  console.log('Cannot connect to the server')
+}
+ 

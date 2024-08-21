@@ -24,7 +24,7 @@ services:
     container_name: node_api_container
     environment:
       - NODE_ENV=development
-      - MYSQL_HOST=mysql
+      - MYSQL_HOST=mysql_container
       - MYSQL_USER=user
       - MYSQL_PASSWORD=user_password
       - MYSQL_DATABASE=ecommerce_db

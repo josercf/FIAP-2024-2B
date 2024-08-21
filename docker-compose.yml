@@ -28,8 +28,6 @@ services:
       - MYSQL_USER=user
       - MYSQL_PASSWORD=user_password
       - MYSQL_DATABASE=ecommerce_db
-    volumes:
-      - ./src:/usr/src/app
     ports:
       - "3000:3000"
     depends_on:

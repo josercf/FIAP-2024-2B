@@ -74,7 +74,7 @@ const pedidoController = require('../controllers/pedidoController');
  *      500:
  *        description: Server Error
  */
-router.post('/pedidos', pedidoController.criarPedido);
+router.post('/pedidos', pedidoController.realizarPedido);
 
 /**
  * @openapi
